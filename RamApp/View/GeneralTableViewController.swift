@@ -38,11 +38,15 @@ class GeneralTableViewController: UITableViewController {
     
     
     @objc func reloadData(url: String) {
+        self.setDisableButtons()
+
                 chargeEvent.getData(setURL: url) { (response) in
             if let response = response as? ResponseModel{
                 self.data = response.results
                 self.info = [response.info]
                 DispatchQueue.main.async {
+                    self.setEnableButtons()
+
                     self.tableServices.reloadData()
                     if self.info.first?.next == ""{
                         self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -120,5 +124,15 @@ class GeneralTableViewController: UITableViewController {
         self.present(alert, animated: true)
     }
 
+    func setEnableButtons(){
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        self.navigationItem.leftBarButtonItem?.isEnabled = true
+
+    }
+    func setDisableButtons(){
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.leftBarButtonItem?.isEnabled = false
+
+    }
 }
 
